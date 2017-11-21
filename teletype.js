@@ -18,7 +18,7 @@ function teletype(element, callback) {
 
 
   this.printHTML = function(html, delay, tmp = '') {
-    if(html.length > 0) {
+    if(delay && html.length > 0) {
       var i = 0;
       var prnt = '';
       if(tmp.length > 0)
