@@ -16,10 +16,49 @@ function teletype(element, callback) {
 
   function scrollBottom() { element.scrollTop = element.scrollHeight; }
 
-  this.printHTML = function(html) { element.innerHTML += html; scrollBottom(); }
-  this.printText = function(text) { element.innerText += text; scrollBottom(); }
-  this.printStyled = function(text, style) { that.printHTML("<span style='" + style + "'>" + encodeHTML(text) + "</span>"); }
-  
+
+  this.printHTML = function(html, delay, tmp = '') {
+    if(html.length > 0) {
+      var i = 0;
+      var prnt = '';
+      if(tmp.length > 0)
+        element.innerHTML = element.innerHTML.slice(0, -tmp.length);
+      if(html[0] == '<') {
+        prnt += '<';
+        while(i < html.length && html[i] != '>') {
+          i++;
+          prnt += html[i];
+        }
+        tmp += prnt;
+        element.innerHTML += tmp;
+      }
+      else if(html[0] == '&') {
+        prnt += '&';
+        while(i < html.length && html[i] != ';') {
+          i++;
+          prnt += html[i];
+        }
+        tmp += prnt;
+        element.innerHTML += tmp;
+      }
+      else {
+        tmp += html[i];
+        element.innerHTML += tmp;
+      }
+      scrollBottom();
+      setTimeout(that.printHTML, delay, html.substr(i+1), delay, tmp);
+    }
+    else
+      element.innerHTML += html;
+  }
+  this.printText = function(text, style, delay) {
+    var html = encodeHTML(text);
+    if(style)
+      that.printHTML("<span style='" + style + "'>" + html + "</span>", delay);
+    else
+      that.printHTML(html, delay);
+  }
+
   this.clear = function() { current = ''; element.innerHTML = ''; scrollBottom(); }
 
 
@@ -43,8 +82,9 @@ function teletype(element, callback) {
     }
     else if (e.keyCode == 8) {
         if (current.length > 0) {
-          element.innerText = element.innerText.slice(0, -1);
-          current = encodeHTML(decodeHTML(current).slice(0, -1));
+          var decode = decodeHTML(current);
+          element.innerHTML = element.innerHTML.slice(0, -encodeHTML(decode[decode.length - 1]).length);
+          current = encodeHTML(decode.slice(0, -1));
           return false;
         }
     }
