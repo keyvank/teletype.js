@@ -16,21 +16,35 @@ function teletype(element, callback) {
 
   function scrollBottom() { element.scrollTop = element.scrollHeight; }
 
+  var queue = [];
+  var printing = false;
 
-  this.printHTML = function(html, delay, tmp = '') {
-    if(delay && html.length > 0) {
+  this.printHTML = function(html, options = {}, _go = false, _html = '', _printed = '') {
+    if(!_go && _printed == '') {
+      if(printing) {
+        queue.push([html, options]);
+        return;
+      }
+      else if(options.wait) {
+        printing = true;
+        setTimeout(that.printHTML, options.wait, html, options, true, _printed);
+        return;
+      }
+    }
+    if(options.delay && html.length > 0) {
+      printing = true;
       var i = 0;
       var prnt = '';
-      if(tmp.length > 0)
-        element.innerHTML = element.innerHTML.slice(0, -tmp.length);
+      if(!_html)
+        _html = element.innerHTML;
       if(html[0] == '<') {
         prnt += '<';
         while(i < html.length && html[i] != '>') {
           i++;
           prnt += html[i];
         }
-        tmp += prnt;
-        element.innerHTML += tmp;
+        _printed += prnt;
+        element.innerHTML = _html + _printed;
       }
       else if(html[0] == '&') {
         prnt += '&';
@@ -38,25 +52,32 @@ function teletype(element, callback) {
           i++;
           prnt += html[i];
         }
-        tmp += prnt;
-        element.innerHTML += tmp;
+        _printed += prnt;
+        element.innerHTML = _html + _printed;
       }
       else {
-        tmp += html[i];
-        element.innerHTML += tmp;
+        _printed += html[i];
+        element.innerHTML = _html + _printed;
       }
       scrollBottom();
-      setTimeout(that.printHTML, delay, html.substr(i+1), delay, tmp);
+      setTimeout(that.printHTML, options.delay, html.substr(i+1), options, true, _html, _printed);
     }
-    else
+    else {
       element.innerHTML += html;
+      printing = false;
+      if(options.enable) { enabled = true; }
+      if(queue.length > 0) {
+        var job = queue.shift();
+        setTimeout(that.printHTML, job[1].wait, job[0], job[1], true);
+      }
+    }
   }
-  this.printText = function(text, style, delay) {
+  this.printText = function(text, style, options = {}) {
     var html = encodeHTML(text);
     if(style)
-      that.printHTML("<span style='" + style + "'>" + html + "</span>", delay);
+      that.printHTML("<span style='" + style + "'>" + html + "</span>", options);
     else
-      that.printHTML(html, delay);
+      that.printHTML(html, options);
   }
 
   this.clear = function() { current = ''; element.innerHTML = ''; scrollBottom(); }
