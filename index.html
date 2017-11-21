@@ -30,7 +30,7 @@
     </div>
     <script>
       var tty = new teletype(document.getElementById('console'), function(str) {
-        tty.printText("You said: "+str+'\n');
+        tty.printStyled("You said: "+str+'\n', 'color: red; font-size:1.5em;');
       });
       tty.enable();
     </script>

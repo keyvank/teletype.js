@@ -18,6 +18,8 @@ function teletype(element, callback) {
 
   this.printHTML = function(html) { element.innerHTML += html; scrollBottom(); }
   this.printText = function(text) { element.innerText += text; scrollBottom(); }
+  this.printStyled = function(text, style) { that.printHTML("<span style='" + style + "'>" + encodeHTML(text) + "</span>"); }
+  
   this.clear = function() { current = ''; element.innerHTML = ''; scrollBottom(); }
 
 
