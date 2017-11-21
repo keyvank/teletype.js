@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TeleType.js</title>
+    <meta charset="utf-8"/>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+      }
+      @keyframes flicker {
+        0% { opacity: 0; }
+        50% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+      #console::after{
+        content: '_';
+        animation-duration: 0.8s;
+        animation-name: flicker;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+    </style>
+    <script src="teletype.js"></script>
+  </head>
+  <body>
+    <div id="console" style="overflow:hidden; width:100vw; height:100vh; background-color:black; color:white;font-size:20px">
+    </div>
+    <script>
+      var tty = new teletype(document.getElementById('console'), function(str) {
+        tty.print("You said: "+str+"<br>");
+      });
+      tty.enable();
+    </script>
+  </body>
+</html>
