@@ -1,85 +1,85 @@
 function teletype(element, callback) {
-  this.enabled = false;
-  this.current = '';
-  this.element = element;
-  this.element.setAttribute('tabindex','0');
-  this.element.style.lineHeight = element.style.fontSize;
-  this.element.style.wordBreak = 'break-all';
-  this.element.style.overflowWrap = 'break';
-  this.element.style.fontFamily = 'monospace';
-  var command_list = [];
-  var command_list_position = null;
+  var enabled = false;
+  this.disable = function() { enabled = false; }
+  this.enable = function() { enabled = true; }
+
+  element.setAttribute('tabindex','0');
+  element.style.lineHeight = element.style.fontSize;
+  element.style.wordBreak = 'break-all';
+  element.style.overflowWrap = 'break';
+  element.style.fontFamily = 'monospace'
+  element.style.boxSizing = 'border-box';
+  element.style.paddingBottom = element.style.fontSize;
 
   var that = this;
-  this.element.addEventListener('keydown', function(e) {
+  var current = '';
+
+  function scrollBottom() { element.scrollTop = element.scrollHeight; }
+
+  this.printHTML = function(html) { element.innerHTML += html; scrollBottom(); }
+  this.printText = function(text) { element.innerText += text; scrollBottom(); }
+  this.clear = function() { current = ''; element.innerHTML = ''; scrollBottom(); }
+
+
+  function encodeHTML(text) { var tmp = document.createElement("div"); tmp.innerText = text; return tmp.innerHTML; }
+  function decodeHTML(html) { var tmp = document.createElement("div"); tmp.innerHTML = html; return tmp.innerText; }
+
+  var command_cache = [];
+  var command_cache_position = null;
+  element.addEventListener('keydown', function(e) {
+    if(!enabled)
+      return true;
+
     if (e.keyCode == 13) {
-        command_list.push(that.current);
-        command_list_position = command_list.length;
-        that.element.innerHTML += '<br>';
-        callback(that.current);
-        that.current = '';
-        that.element.scrollTop = that.element.scrollHeight;
+        command_cache.push(current);
+        command_cache_position = command_cache.length;
+        element.innerHTML += '<br>';
+        callback(decodeHTML(current));
+        current = '';
+        scrollBottom();
         return false;
     }
     else if (e.keyCode == 8) {
-        if (that.current.length > 0) {
-          that.element.innerHTML = that.element.innerHTML.slice(0, -1);;
-          that.current = that.current.slice(0, -1);
+        if (current.length > 0) {
+          element.innerText = element.innerText.slice(0, -1);
+          current = encodeHTML(decodeHTML(current).slice(0, -1));
           return false;
         }
     }
     else if(e.keyCode == 38) {
-      if(command_list_position > 0) {
-        command_list_position--;
-        if(that.current.length > 0)
-          that.element.innerHTML = that.element.innerHTML.slice(0, -that.current.length);
-        that.current = command_list[command_list_position];
-        that.element.innerHTML += that.current;
+      if(command_cache_position > 0) {
+        command_cache_position--;
+        if(current.length > 0)
+          element.innerHTML = element.innerHTML.slice(0, -current.length);
+        current = command_cache[command_cache_position];
+        element.innerHTML += current;
       }
       return false;
     }
     else if(e.keyCode == 40) {
-      if(command_list_position < command_list.length - 1) {
-        command_list_position++;
-        if(that.current.length > 0)
-          that.element.innerHTML = that.element.innerHTML.slice(0, -that.current.length);
-        that.current = command_list[command_list_position];
-        that.element.innerHTML += that.current;
+      if(command_cache_position < command_cache.length - 1) {
+        command_cache_position++;
+        if(current.length > 0)
+          element.innerHTML = element.innerHTML.slice(0, -current.length);
+        current = command_cache[command_cache_position];
+        element.innerHTML += current;
       }
       return false;
     }
     else
         return true;
   });
-  this.element.addEventListener('keypress', function(e) {
-    if(that.enabled && e.keyCode != 13) {
-      var tmp = document.createElement("div");
-      tmp.innerText = String.fromCharCode(e.keyCode);
-      that.current += tmp.innerHTML;
-      that.element.innerHTML += tmp.innerHTML;
-      that.element.scrollTop = that.element.scrollHeight;
+
+  element.addEventListener('keypress', function(e) {
+    if(!enabled)
+      return true;
+    if(e.keyCode != 13) {
+      var html = encodeHTML(String.fromCharCode(e.keyCode));
+      current += html;
+      element.innerHTML += html;
+      scrollBottom();
     }
     return false;
   });
-}
 
-teletype.prototype.print = function(str) {
-  this.element.innerHTML += str;
-  this.element.scrollTop = this.element.scrollHeight;
-}
-
-teletype.prototype.clear = function() {
-  this.all_text = '';
-  this.current = '';
-  this.element.innerHTML = '';
-  this.element.scrollTop = this.element.scrollHeight;
-}
-
-teletype.prototype.disable = function() {
-  this.enabled = false;
-  this.element.scrollTop = this.element.scrollHeight;
-}
-teletype.prototype.enable = function() {
-  this.enabled = true;
-  this.element.scrollTop = this.element.scrollHeight;
 }
