@@ -45,7 +45,7 @@
         prompt();
       });
       function prompt() {
-        tty.printText("TeleType.js >> ", "color: cyan", {wait: 2000, enable: true});
+        tty.printText("TeleType.js >> ", "color: cyan", {enable: true});
       }
       tty.disable();
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
@@ -63,6 +63,9 @@
       tty.printText("Then ",'', {delay:50, wait:1000});
       tty.printText("var tty = new teletype(document.getElementById(\"console\"), function(input) { });\n\n", 'color: red', {delay:50});
 
+      tty.printText("If you liked it, ", '', {wait:1000,delay:50});
+      tty.printText("please stargaze this little kid on ", 'font-size:30px; line-height:40px; color:orange', {delay:50});
+      tty.printHTML("<span style='font-size:30px; line-height:30px;color:orange;'><a href='https://github.com/keyvank/teletype.js'>GitHub</a>!<br><br></span>", {delay:50});
       prompt();
     </script>
   </body>
