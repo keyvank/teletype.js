@@ -42,11 +42,24 @@
     </div>
     <script>
       var tty = new teletype(document.getElementById('console'), function(str) {
-        prompt();
+        tty.disable();
+        tty.printText("Alright " + str + "!\n");
+        tty.printText("If you liked it, ", '', {wait:1000,delay:50});
+        tty.printText("please stargaze this little kid on ", 'font-size:30px; line-height:40px; color:orange', {delay:50});
+        tty.printHTML("<span style='font-size:30px; line-height:30px;color:orange;'><a href='https://github.com/keyvank/teletype.js'>GitHub</a>!<br><br></span>", {delay:50});
+
+        tty.printText("To get started:\n\n",'', {delay:50, wait:1000});
+
+        tty.printText("First add: ",'', {delay:50, wait:1000});
+        tty.printText("<script src=\"https://teletype.js.org/teletype.js\"><\/script>", 'color: magenta', {delay:50});
+        tty.printText(" to your webpage!\n",'', {delay:50});
+
+        tty.printText("Then create a ",'', {delay:50, wait:1000});
+        tty.printText("<div id=\"console\"></div>", 'color:green', {delay:50});
+        tty.printText(" and set your preferred styles on it!\n",'', {delay:50});
+        tty.printText("Then ",'', {delay:50, wait:1000});
+        tty.printText("var tty = new teletype(document.getElementById(\"console\"), function(input) { });\n\n", 'color: red', {delay:50});
       });
-      function prompt() {
-        tty.printText("TeleType.js >> ", "color: cyan", {enable: true});
-      }
       tty.disable();
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
       tty.printText("This is teletype.js!\n",'', {delay:50, wait:1000});
@@ -54,28 +67,18 @@
 
       tty.printText('With teletype.js you can:\n\n','',{wait:1000,delay:50});
       tty.printText('Write text!\n','',{wait:1000,delay:50});
+      tty.printText('Too fast!\n','',{wait:500,delay:10});
+      tty.printText('Or too damn slow...\n','',{wait:500,delay:150});
       tty.printText('Give it ','',{wait:500,delay:50});
       tty.printText(' different styles!\n','color:red;font-size:1.5em;font-weight:bold;font-style:italic;',{wait:0,delay:50});
       tty.printText('Align it!\n','color:orange;font-size:2em;text-align:center;display:block;',{wait:500,delay:50});
       tty.printHTML('Or even add <a href="https://teletype.js.org">links</a>!<br>',{wait:500,delay:50});
       tty.printHTML('Or images <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/160/apple/114/smiling-face-with-sunglasses_1f60e.png" style="height:1.5em;vertical-align:middle"/><br>',{wait:500,delay:50});
+      tty.printText('You can get inputs. ', '',{wait:500,delay:50});
+      tty.printText('Give it a try!\n', '',{wait:500,delay:50});
+      tty.printText("What is your name? ", '', {enable: true});
 
-      tty.printText("If you liked it, ", '', {wait:1000,delay:50});
-      tty.printText("please stargaze this little kid on ", 'font-size:30px; line-height:40px; color:orange', {delay:50});
-      tty.printHTML("<span style='font-size:30px; line-height:30px;color:orange;'><a href='https://github.com/keyvank/teletype.js'>GitHub</a>!<br><br></span>", {delay:50});
 
-      tty.printText("To get started:\n\n",'', {delay:50, wait:1000});
-
-      tty.printText("First add: ",'', {delay:50, wait:1000});
-      tty.printText("<script src=\"https://teletype.js.org/teletype.js\"><\/script>", 'color: magenta', {delay:50});
-      tty.printText(" to your webpage!\n",'', {delay:50});
-
-      tty.printText("Then create a ",'', {delay:50, wait:1000});
-      tty.printText("<div id=\"console\"></div>", 'color:green', {delay:50});
-      tty.printText(" and set your preferred styles on it!\n",'', {delay:50});
-      tty.printText("Then ",'', {delay:50, wait:1000});
-      tty.printText("var tty = new teletype(document.getElementById(\"console\"), function(input) { });\n\n", 'color: red', {delay:50});
-      prompt();
     </script>
   </body>
 </html>
