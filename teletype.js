@@ -20,7 +20,7 @@ function teletype(element, callback) {
   var queue = [];
   var printing = false;
 
-  this.printHTML = function(html, options = {}, _go = false, _html = '', _printed = '') {
+  this.printHTML = function(html, options = {}, _go = false, _node = null, _printed = '') {
     if (!_go && _printed == '') {
       if (printing) {
         queue.push([html, options]);
@@ -35,8 +35,10 @@ function teletype(element, callback) {
       printing = true;
       var i = 0;
       var prnt = '';
-      if (!_html)
-        _html = element.innerHTML;
+      if (!_node) {
+        _node = document.createElement("span");
+        element.appendChild(_node);
+      }
       if (html[0] == '<') {
         prnt += '<';
         while (i < html.length && html[i] != '>') {
@@ -44,7 +46,7 @@ function teletype(element, callback) {
           prnt += html[i];
         }
         _printed += prnt;
-        element.innerHTML = _html + _printed;
+        _node.innerHTML = _printed;
       } else if (html[0] == '&') {
         prnt += '&';
         while (i < html.length && html[i] != ';') {
@@ -52,15 +54,16 @@ function teletype(element, callback) {
           prnt += html[i];
         }
         _printed += prnt;
-        element.innerHTML = _html + _printed;
+        _node.innerHTML = _printed;
       } else {
         _printed += html[i];
-        element.innerHTML = _html + _printed;
+        _node.innerHTML = _printed;
       }
       teletype.scrollBottom(element);
-      setTimeout(that.printHTML, options.delay, html.substr(i + 1), options, true, _html, _printed);
+      setTimeout(that.printHTML, options.delay, html.substr(i + 1), options, true, _node, _printed);
     } else {
-      element.innerHTML += html;
+      if(!_node)
+        element.innerHTML += html;
       printing = false;
       if (options.enable) {
         enabled = true;
@@ -99,14 +102,14 @@ function teletype(element, callback) {
       element.innerHTML += '<br>';
       callback(teletype.decodeHTML(input));
       input = '';
+      prompt_node = null;
       teletype.scrollBottom(element);
       return false;
     } else if (e.keyCode == 8) { // Backspace
       if (input.length > 0) {
         var decode = teletype.decodeHTML(input);
-        var lastCharHTML = teletype.encodeHTML(decode[decode.length - 1]);
-        element.innerHTML = element.innerHTML.slice(0, -lastCharHTML.length);
         input = teletype.encodeHTML(decode.slice(0, -1));
+        prompt_node.innerHTML = input;
         return false;
       }
     } else if (e.keyCode == 38 || e.keyCode == 40) { // Arrow keys
@@ -119,10 +122,12 @@ function teletype(element, callback) {
         command_cache_position++;
       }
       if (changed) {
-        if (input.length > 0)
-          element.innerHTML = element.innerHTML.slice(0, -input.length);
-        input = command_cache[command_cache_position];
-        element.innerHTML += input;
+        if(!prompt_node) {
+          prompt_node = document.createElement('span');
+          element.appendChild(prompt_node);
+        }
+        input = command_cache[command_cache_position]
+        prompt_node.innerHTML = input;
       }
       return false;
     } else
@@ -130,14 +135,19 @@ function teletype(element, callback) {
   }
   element.addEventListener('keydown', keydown);
 
+  var prompt_node = null;
   function keypress(e) {
     if (!enabled)
       return true;
 
     if (e.keyCode != 13) { // Enter
+      if(!prompt_node) {
+        prompt_node = document.createElement('span');
+        element.appendChild(prompt_node);
+      }
       var html = teletype.encodeHTML(String.fromCharCode(e.keyCode));
       input += html;
-      element.innerHTML += html;
+      prompt_node.innerHTML = input;
       teletype.scrollBottom(element);
     }
 
