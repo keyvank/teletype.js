@@ -43,7 +43,7 @@
     <script>
       var tty = new teletype(document.getElementById('console'), function(str) {
         tty.disable();
-        tty.printText("Alright " + str + "!\n");
+        tty.printText("Alright " + str + "!\n", '', {wait:1000,delay:50});
         tty.printText("If you liked it, ", '', {wait:1000,delay:50});
         tty.printText("please stargaze this little kid on ", 'font-size:30px; line-height:40px; color:orange', {delay:50});
         tty.printHTML("<span style='font-size:30px; line-height:30px;color:orange;'><a href='https://github.com/keyvank/teletype.js'>GitHub</a>!<br><br></span>", {delay:50});
@@ -51,16 +51,19 @@
         tty.printText("To get started:\n\n",'', {delay:50, wait:1000});
 
         tty.printText("First add: ",'', {delay:50, wait:1000});
-        tty.printText("<script src=\"https://teletype.js.org/teletype.js\"><\/script>", 'color: magenta', {delay:50});
+        tty.printHTML("<span style='background-color:#000000;'><span style='color:#865700; '>&lt;</span><span style='color:#508050; font-weight:bold; '>script</span><span style='color:#477766; '> </span><span style='color:#477766; '>src</span><span style='color:#808030; '>=</span><span style='color:#cc5555; '>\"https://teletype.js.org/teletype.js\"</span><span style='color:#865700; '>></span><span style='color:#865700; '>&lt;/</span><span style='color:#508050; font-weight:bold; '>script</span><span style='color:#865700; '>></span></span>", {delay:50});
         tty.printText(" to your webpage!\n",'', {delay:50});
 
         tty.printText("Then create a ",'', {delay:50, wait:1000});
-        tty.printText("<div id=\"console\"></div>", 'color:green', {delay:50});
+        tty.printHTML("<span style='background-color:#000000;'><span style='color:#865700; '>&lt;</span><span style='color:#508050; font-weight:bold; '>div</span><span style='color:#477766; '> </span><span style='color:#477766; '>id</span><span style='color:#808030; '>=</span><span style='color:#cc5555; '>\"console\"</span><span style='color:#865700; '>></span><span style='color:#865700; '>&lt;/</span><span style='color:#508050; font-weight:bold; '>div</span><span style='color:#865700; '>></span></span>", {delay:50});
         tty.printText(" and set your preferred styles on it!\n",'', {delay:50});
-        tty.printText("Then ",'', {delay:50, wait:1000});
-        tty.printText("var tty = new teletype(document.getElementById(\"console\"), function(input) { });\n\n", 'color: red', {delay:50});
+        tty.printText("Then:\n",'', {delay:50, wait:1000});
+        tty.printHTML(`<span style='color:#508050; font-weight:bold; '>var</span> tty <span style='color:#808030; '>=</span> <span style='color:#508050; font-weight:bold; '>new</span> teletype<span style='color:#808030; '>(</span>document<span style='color:#808030; '>.</span>getElementById<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#cc5555; '>console</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#808030; '>,</span> <span style='color:#508050; font-weight:bold; '>function</span><span style='color:#808030; '>(</span>input<span style='color:#808030; '>)</span> <span style='color:#800080; '>{</span><br>
+<span style='white-space:pre;'>    </span>tty<span style='color:#808030; '>.</span>printText<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#cc5555; '>You said: </span><span style='color:#800000; '>"</span> <span style='color:#808030; '>+</span> input<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span><br>
+  <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span><br>`, {delay:50});
       });
       tty.disable();
+
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
       tty.printText("This is teletype.js!\n",'', {delay:50, wait:1000});
       //tty.printHTML("I built my resume on top of this: <a href='https://keyvan.me'>https://keyvan.me</a>!<br>", {delay:50, wait:1000});
