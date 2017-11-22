@@ -10,6 +10,18 @@
         border: 0;
         outline: 0;
       }
+      #console {
+        overflow:hidden;
+        width:100vw;
+        height:100vh;
+        background-color:black;
+        color:white;
+        font-size:20px;
+        font-family: monospace;
+      }
+      #console a, #console a:visited {
+        color: yellow;
+      }
       @keyframes flicker {
         0% { opacity: 0; }
         50% { opacity: 1; }
@@ -26,20 +38,20 @@
     <script src="teletype.js"></script>
   </head>
   <body>
-    <div id="console" style="overflow:hidden; width:100vw; height:100vh; background-color:black; color:white;font-size:20px">
+    <div id="console">
     </div>
     <script>
       var tty = new teletype(document.getElementById('console'), function(str) {
         prompt();
       });
       function prompt() {
-        tty.printText("TeleType.js >> ", "color: cyan");
+        tty.printText("TeleType.js >> ", "color: cyan", {enable: true});
       }
       tty.disable();
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
       tty.printText("My name is Keyvan!\n",'', {delay:50, wait:1000});
       tty.printHTML("I built my resume on top of this: <a href='https://keyvan.me'>https://keyvan.me</a>!<br>", {delay:50, wait:1000});
-      tty.printText("Get started with TeleType.js!\n",'', {delay:50, wait:1000, enable: true});
+      tty.printText("Get started with TeleType.js!\n",'', {delay:50, wait:1000});
       prompt();
     </script>
   </body>
