@@ -93,6 +93,7 @@ function teletype(element, callback) {
   var command_cache_position = null;
 
   function keydown(e) {
+    e.preventDefault();
     if (!enabled)
       return true;
 
