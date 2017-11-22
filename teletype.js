@@ -93,7 +93,6 @@ function teletype(element, callback) {
   var command_cache_position = null;
 
   function keydown(e) {
-    e.preventDefault();
     if (!enabled)
       return true;
 
@@ -138,7 +137,6 @@ function teletype(element, callback) {
 
   var prompt_node = null;
   function keypress(e) {
-    e.preventDefault();
     if (!enabled)
       return true;
 
@@ -155,11 +153,6 @@ function teletype(element, callback) {
     return false;
   }
   element.addEventListener('keypress', keypress);
-
-  function keyup(e) {
-    e.preventDefault();
-  }
-  element.addEventListener('keyup', keyup);
 }
 
 teletype.scrollBottom = function(element) {
