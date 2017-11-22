@@ -11,7 +11,9 @@ function teletype(element, callback) {
   fake_textarea.style.position = 'absolute';
   fake_textarea.style.width = '100%';
   fake_textarea.style.height = '100%';
-  fake_textarea.style.opacity = '0';
+  fake_textarea.style.opacity = '0.01';
+  fake_textarea.setAttribute('autocorrect','off');
+  fake_textarea.setAttribute('autocapitalize','off');
   element.appendChild(fake_textarea);
 
   element.setAttribute('tabindex', '0');
@@ -70,7 +72,7 @@ function teletype(element, callback) {
       setTimeout(that.printHTML, options.delay, html.substr(i + 1), options, true, _node, _printed);
     } else {
       if(!_node)
-        element.innerHTML += html;
+        element.insertAdjacentHTML('beforeend', html);
       printing = false;
       if (options.enable) {
         enabled = true;
@@ -101,7 +103,7 @@ function teletype(element, callback) {
 
   function keydown(e) {
     if (!enabled)
-      return true;
+      return false;
 
     if (e.keyCode == 13) { // Enter
       command_cache.push(input);
@@ -140,12 +142,12 @@ function teletype(element, callback) {
     } else
       return true;
   }
-  element.addEventListener('keydown', keydown);
+  fake_textarea.addEventListener('keydown', keydown);
 
   var prompt_node = null;
   function keypress(e) {
     if (!enabled)
-      return true;
+      return false;
 
     if (e.keyCode != 13) { // Enter
       if(!prompt_node) {
@@ -159,7 +161,7 @@ function teletype(element, callback) {
     }
     return false;
   }
-  element.addEventListener('keypress', keypress);
+  fake_textarea.addEventListener('keypress', keypress);
 }
 
 teletype.scrollBottom = function(element) {
