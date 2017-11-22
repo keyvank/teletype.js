@@ -114,7 +114,7 @@ function teletype(element, callback) {
       if (e.keyCode == 38 && command_cache_position > 0) {
         changed = true;
         command_cache_position--;
-      } else if (command_cache_position < command_cache.length - 1) {
+      } else if (e.keyCode == 40 && command_cache_position < command_cache.length - 1) {
         changed = true;
         command_cache_position++;
       }
