@@ -49,9 +49,22 @@
       }
       tty.disable();
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
-      tty.printText("My name is Keyvan!\n",'', {delay:50, wait:1000});
-      tty.printHTML("I built my resume on top of this: <a href='https://keyvan.me'>https://keyvan.me</a>!<br>", {delay:50, wait:1000});
-      tty.printText("Get started with TeleType.js!\n",'', {delay:50, wait:1000});
+      tty.printText("This is teletype.js!\n",'', {delay:50, wait:1000});
+      //tty.printHTML("I built my resume on top of this: <a href='https://keyvan.me'>https://keyvan.me</a>!<br>", {delay:50, wait:1000});
+
+      tty.printText('With teletype.js you can:\n\n','',{wait:1000,delay:50});
+      tty.printText('Write text!\n','',{wait:1000,delay:50});
+      tty.printText('Give it ','',{wait:500,delay:50});
+      tty.printText(' different styles!\n','color:red;font-size:1.5em;font-weight:bold;font-style:italic;',{wait:0,delay:50});
+      tty.printText('Align it!\n','color:orange;font-size:2em;text-align:center;display:block;',{wait:500,delay:50});
+      tty.printHTML('Or even add <a href="https://teletype.js.org">links</a>!<br>',{wait:500,delay:50});
+      tty.printHTML('Or images <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/160/apple/114/smiling-face-with-sunglasses_1f60e.png" style="height:1.5em;vertical-align:middle"/><br>',{wait:500,delay:50});
+
+      tty.printText("If you liked it, ", '', {wait:1000,delay:50});
+      tty.printText("please stargaze this little kid on ", 'font-size:30px; line-height:40px; color:orange', {delay:50});
+      tty.printHTML("<span style='font-size:30px; line-height:30px;color:orange;'><a href='https://github.com/keyvank/teletype.js'>GitHub</a>!<br><br></span>", {delay:50});
+
+      tty.printText("To get started:\n\n",'', {delay:50, wait:1000});
 
       tty.printText("First add: ",'', {delay:50, wait:1000});
       tty.printText("<script src=\"https://teletype.js.org/teletype.js\"><\/script>", 'color: magenta', {delay:50});
@@ -62,10 +75,6 @@
       tty.printText(" and set your preferred styles on it!\n",'', {delay:50});
       tty.printText("Then ",'', {delay:50, wait:1000});
       tty.printText("var tty = new teletype(document.getElementById(\"console\"), function(input) { });\n\n", 'color: red', {delay:50});
-
-      tty.printText("If you liked it, ", '', {wait:1000,delay:50});
-      tty.printText("please stargaze this little kid on ", 'font-size:30px; line-height:40px; color:orange', {delay:50});
-      tty.printHTML("<span style='font-size:30px; line-height:30px;color:orange;'><a href='https://github.com/keyvank/teletype.js'>GitHub</a>!<br><br></span>", {delay:50});
       prompt();
     </script>
   </body>
