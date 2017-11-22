@@ -7,6 +7,13 @@ function teletype(element, callback) {
     enabled = true;
   }
 
+  var fake_textarea = document.createElement("textarea");
+  fake_textarea.style.position = 'absolute';
+  fake_textarea.style.width = '100%';
+  fake_textarea.style.height = '100%';
+  fake_textarea.style.opacity = '0';
+  element.appendChild(fake_textarea);
+
   element.setAttribute('tabindex', '0');
   element.style.lineHeight = element.style.fontSize;
   element.style.wordBreak = 'break-all';
