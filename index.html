@@ -45,13 +45,24 @@
         prompt();
       });
       function prompt() {
-        tty.printText("TeleType.js >> ", "color: cyan", {enable: true});
+        tty.printText("TeleType.js >> ", "color: cyan", {wait: 2000, enable: true});
       }
       tty.disable();
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
       tty.printText("My name is Keyvan!\n",'', {delay:50, wait:1000});
       tty.printHTML("I built my resume on top of this: <a href='https://keyvan.me'>https://keyvan.me</a>!<br>", {delay:50, wait:1000});
       tty.printText("Get started with TeleType.js!\n",'', {delay:50, wait:1000});
+
+      tty.printText("First add: ",'', {delay:50, wait:1000});
+      tty.printText("<script src=\"https://teletype.js.org/teletype.js\"><\/script>", 'color: magenta', {delay:50});
+      tty.printText(" to your webpage!\n",'', {delay:50});
+
+      tty.printText("Then create a ",'', {delay:50, wait:1000});
+      tty.printText("<div id=\"console\"></div>", 'color:green', {delay:50});
+      tty.printText(" and set your preferred styles on it!\n",'', {delay:50});
+      tty.printText("Then ",'', {delay:50, wait:1000});
+      tty.printText("var tty = new teletype(document.getElementById(\"console\"), function(input) { });\n\n", 'color: red', {delay:50});
+
       prompt();
     </script>
   </body>
