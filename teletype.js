@@ -101,11 +101,12 @@ function teletype(element, callback) {
   var command_cache = [];
   var command_cache_position = null;
 
-  function keydown(e) {
+  var prompt_node = null;
+  function onchar(char) {
     if (!enabled)
       return false;
 
-    if (e.keyCode == 13) { // Enter
+    if (char == 13 || char == 10) { // Enter
       command_cache.push(input);
       command_cache_position = command_cache.length;
       element.innerHTML += '<br>';
@@ -114,19 +115,19 @@ function teletype(element, callback) {
       prompt_node = null;
       teletype.scrollBottom(element);
       return false;
-    } else if (e.keyCode == 8) { // Backspace
+    } else if (char == 8) { // Backspace
       if (input.length > 0) {
         var decode = teletype.decodeHTML(input);
         input = teletype.encodeHTML(decode.slice(0, -1));
         prompt_node.innerHTML = input;
         return false;
       }
-    } else if (e.keyCode == 38 || e.keyCode == 40) { // Arrow keys
+    } else if (char == 38 || char == 40) { // Arrow keys
       var changed = false;
-      if (e.keyCode == 38 && command_cache_position > 0) {
+      if (char == 38 && command_cache_position > 0) {
         changed = true;
         command_cache_position--;
-      } else if (e.keyCode == 40 && command_cache_position < command_cache.length - 1) {
+      } else if (char == 40 && command_cache_position < command_cache.length - 1) {
         changed = true;
         command_cache_position++;
       }
@@ -139,29 +140,27 @@ function teletype(element, callback) {
         prompt_node.innerHTML = input;
       }
       return false;
-    } else
-      return true;
-  }
-  fake_textarea.addEventListener('keydown', keydown);
-
-  var prompt_node = null;
-  function keypress(e) {
-    if (!enabled)
-      return false;
-
-    if (e.keyCode != 13) { // Enter
+    } else {
       if(!prompt_node) {
         prompt_node = document.createElement('span');
         element.appendChild(prompt_node);
       }
-      var html = teletype.encodeHTML(String.fromCharCode(e.keyCode));
+      var html = teletype.encodeHTML(String.fromCharCode(char));
       input += html;
       prompt_node.innerHTML = input;
       teletype.scrollBottom(element);
     }
-    return false;
   }
-  fake_textarea.addEventListener('keypress', keypress);
+
+  var fake_textarea_length = 0;
+  fake_textarea.addEventListener('input', function(e) {
+    var new_length = e.target.value.length;
+    if(new_length == fake_textarea_length - 1)
+      onchar(8);
+    else if(new_length == fake_textarea_length + 1)
+      onchar(e.target.value.charCodeAt(new_length - 1));
+    fake_textarea_length = e.target.value.length;
+  });
 }
 
 teletype.scrollBottom = function(element) {
