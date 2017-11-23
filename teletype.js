@@ -96,6 +96,7 @@ function teletype(element, callback) {
     input = '';
     element.innerHTML = '';
     element.appendChild(fake_textarea);
+    fake_textarea.focus();
     teletype.scrollBottom(element);
   }
 
