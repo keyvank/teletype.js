@@ -98,9 +98,6 @@ function teletype(element, callback) {
     teletype.scrollBottom(element);
   }
 
-  var command_cache = [];
-  var command_cache_position = null;
-
   var prompt_node = null;
   function onchar(char) {
     if (!enabled)
@@ -109,7 +106,7 @@ function teletype(element, callback) {
     if (char == 13 || char == 10) { // Enter
       command_cache.push(input);
       command_cache_position = command_cache.length;
-      element.innerHTML += '<br>';
+      element.insertAdjacentHTML('beforeend', '<br>');
       callback(teletype.decodeHTML(input));
       input = '';
       prompt_node = null;
@@ -122,12 +119,40 @@ function teletype(element, callback) {
         prompt_node.innerHTML = input;
         return false;
       }
-    } else if (char == 38 || char == 40) { // Arrow keys
+    } else {
+      if(!prompt_node) {
+        prompt_node = document.createElement('span');
+        element.appendChild(prompt_node);
+      }
+      var html = teletype.encodeHTML(String.fromCharCode(char));
+      input += html;
+      prompt_node.innerHTML = input;
+      teletype.scrollBottom(element);
+      return false;
+    }
+  }
+
+  var fake_textarea_length = 0;
+  fake_textarea.addEventListener('input', function(e) {
+    var new_length = e.target.value.length;
+    if(new_length == fake_textarea_length - 1)
+      onchar(8);
+    else if(new_length == fake_textarea_length + 1)
+      onchar(e.target.value.charCodeAt(new_length - 1));
+    fake_textarea_length = e.target.value.length;
+  });
+
+  var command_cache = [];
+  var command_cache_position = null;
+  fake_textarea.addEventListener('keydown', function(e) {
+    if (!enabled)
+      return false;
+    if (e.keyCode == 38 || e.keyCode == 40) { // Arrow keys
       var changed = false;
-      if (char == 38 && command_cache_position > 0) {
+      if (e.keyCode == 38 && command_cache_position > 0) {
         changed = true;
         command_cache_position--;
-      } else if (char == 40 && command_cache_position < command_cache.length - 1) {
+      } else if (e.keyCode == 40 && command_cache_position < command_cache.length - 1) {
         changed = true;
         command_cache_position++;
       }
@@ -140,26 +165,8 @@ function teletype(element, callback) {
         prompt_node.innerHTML = input;
       }
       return false;
-    } else {
-      if(!prompt_node) {
-        prompt_node = document.createElement('span');
-        element.appendChild(prompt_node);
-      }
-      var html = teletype.encodeHTML(String.fromCharCode(char));
-      input += html;
-      prompt_node.innerHTML = input;
-      teletype.scrollBottom(element);
     }
-  }
-
-  var fake_textarea_length = 0;
-  fake_textarea.addEventListener('input', function(e) {
-    var new_length = e.target.value.length;
-    if(new_length == fake_textarea_length - 1)
-      onchar(8);
-    else if(new_length == fake_textarea_length + 1)
-      onchar(e.target.value.charCodeAt(new_length - 1));
-    fake_textarea_length = e.target.value.length;
+    return true;
   });
 }
 
