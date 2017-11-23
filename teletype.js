@@ -95,6 +95,7 @@ function teletype(element, callback) {
   this.clear = function() {
     input = '';
     element.innerHTML = '';
+    element.appendChild(fake_textarea);
     teletype.scrollBottom(element);
   }
 
