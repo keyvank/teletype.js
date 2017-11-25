@@ -10,9 +10,6 @@ function teletype(element, callback) {
   var fake_textarea = document.createElement("textarea");
   fake_textarea.style.position = 'absolute';
   fake_textarea.style.left = '-999999px';
-  fake_textarea.style.width = '0';
-  fake_textarea.style.height = '0';
-  fake_textarea.style.opacity = '0';
   fake_textarea.setAttribute('autocorrect','off');
   fake_textarea.setAttribute('autocapitalize','off');
   element.appendChild(fake_textarea);
