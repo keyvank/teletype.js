@@ -41,7 +41,8 @@
     <div id="console">
     </div>
     <script>
-      var tty = new teletype(document.getElementById('console'), function(str) {
+      var element = document.getElementById('console');
+      var tty = new teletype(element, function(str) {
         tty.disable();
         tty.printText("Alright " + str + "!\n", '', {wait:1000,delay:50});
         tty.printText("If you liked it, ", '', {wait:1000,delay:50});
@@ -63,6 +64,7 @@
   <span style='color:#800080; '>}</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span><br>`, {delay:50});
       });
       tty.disable();
+      element.focus();
 
       tty.printText("Hi!\n",'', {delay:50, wait:1000});
       tty.printText("This is teletype.js!\n",'', {delay:50, wait:1000});
